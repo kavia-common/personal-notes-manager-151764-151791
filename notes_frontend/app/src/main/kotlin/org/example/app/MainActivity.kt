@@ -23,55 +23,47 @@ import org.example.app.ui.NotesViewModel
  * Sets up Room and Compose root, ensuring DB init is done off the UI thread for snappy startup.
  */
 class MainActivity : ComponentActivity() {
-    private var viewModel: NotesViewModel? = null
-
+    /**
+     * PUBLIC_INTERFACE
+     * Main launcher activity for the Notes app.
+     * Instantly sets Compose content and initializes ViewModel async.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // BOOTSTRAP: Show splash while initializing DB/repo/ViewModel off main thread
-        // Use classic Android state; only call setContent when ready
         setContent {
             NotesAppTheme {
-                // Show loading while viewModel is null
-                if (viewModel == null) {
-                    // Trigger initialization once (can't use LaunchedEffect reliably here)
-                    AndroidViewBindingSplash { // custom function defined below
-                        initViewModelInBackground()
-                    }
-                } else {
-                    NotesApp(viewModel!!)
-                }
+                MainActivityContent(this)
             }
         }
     }
+}
 
-    // Custom function to start loading initialization using Android Handler
-    @Composable
-    private fun AndroidViewBindingSplash(launchInit: () -> Unit) {
-        LaunchedEffect(Unit) { launchInit() }
+/**
+ * Composable root for MainActivity. Makes sure initialization is 100% main-thread non-blocking.
+ */
+@Composable
+private fun MainActivityContent(activity: ComponentActivity) {
+    var viewModel by remember { mutableStateOf<NotesViewModel?>(null) }
+    // Only kick off DB init when viewModel is null
+    LaunchedEffect(Unit) {
+        if (viewModel == null) {
+            val vm = withContext(Dispatchers.IO) {
+                val db = Room.databaseBuilder(
+                    activity.applicationContext,
+                    NoteDatabase::class.java, "notes.db"
+                ).fallbackToDestructiveMigration().build()
+                val repository = NoteRepository(db.noteDao())
+                NotesViewModel(repository)
+            }
+            viewModel = vm
+        }
+    }
+    if (viewModel == null) {
+        // Minimal Compose-native splash
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
-    }
-
-    // Run DB and repository initialization on background thread, update viewModel on UI thread
-    private fun initViewModelInBackground() {
-        // Only run once
-        if (viewModel != null) return
-        CoroutineScope(Dispatchers.IO).launch {
-            val db = Room.databaseBuilder(
-                applicationContext,
-                NoteDatabase::class.java, "notes.db"
-            ).fallbackToDestructiveMigration().build()
-            val repository = NoteRepository(db.noteDao())
-            val vm = NotesViewModel(repository)
-            withContext(Dispatchers.Main) {
-                viewModel = vm
-                // force a recomposition, setContent already set
-                // In Compose Activity, calling setContent again will recompose.
-                // Viewing viewModel as classic var triggers compose recomposition
-                // already because it's referenced in the setContent scope.
-            }
-        }
+    } else {
+        NotesApp(viewModel!!)
     }
 }

@@ -4,16 +4,17 @@ androidApplication {
     dependencies {
         implementation("org.apache.commons:commons-text:1.11.0")
         implementation(project(":utilities"))
-        // Compose - ALL VERSIONS ALIGNED! See gradle.properties for Compose Compiler version.
-        implementation(platform("androidx.compose:compose-bom:2024.04.01"))
+        // Compose: explicit versions instead of BOM due to dependency resolution failures in this DSL.
+        // Remove/comment the BOM as this setup doesn't support it.
+        // implementation(platform("androidx.compose:compose-bom:2024.04.01"))
         implementation("androidx.activity:activity-compose:1.8.2")
-        implementation("androidx.compose.ui:ui")
-        implementation("androidx.compose.material:material")
-        implementation("androidx.compose.material3:material3")
+        implementation("androidx.compose.ui:ui:1.6.4")
+        implementation("androidx.compose.material:material:1.6.4")
+        implementation("androidx.compose.material3:material3:1.2.0-beta01") // must match Compose 1.6.4; 1.2.1 is not compatible!
+        implementation("androidx.compose.material:material-icons-extended:1.6.4")
+        implementation("androidx.compose.foundation:foundation:1.6.4")
+        implementation("androidx.compose.foundation:foundation-layout:1.6.4")
         implementation("androidx.navigation:navigation-compose:2.7.7")
-        implementation("androidx.compose.material:material-icons-extended")
-        implementation("androidx.compose.foundation:foundation")
-        implementation("androidx.compose.foundation:foundation-layout")
         // Room
         implementation("androidx.room:room-runtime:2.6.1")
         implementation("androidx.room:room-ktx:2.6.1")

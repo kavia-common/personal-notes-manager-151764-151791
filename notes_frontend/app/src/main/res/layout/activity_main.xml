@@ -1,4 +1,7 @@
-<!-- Compose UI is used: No legacy views required. -->
+<!-- Compose UI is used: No legacy views required.
+     This layout is only a placeholder and not shown, but required by Android Studio.
+     Actual UI is set by setContent {} in MainActivity.
+-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"/>
