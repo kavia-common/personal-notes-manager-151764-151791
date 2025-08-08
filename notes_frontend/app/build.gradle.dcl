@@ -19,5 +19,7 @@ androidApplication {
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
         // Compose icons
         implementation("androidx.compose.material:material-icons-extended:1.6.4")
+        // For XML style Theme.MaterialComponents.DayNight bridge theme
+        implementation("com.google.android.material:material:1.11.0")
     }
 }

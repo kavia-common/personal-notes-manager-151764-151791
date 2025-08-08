@@ -1,3 +1,11 @@
 <resources>
-    <style name="Theme.NotesApp" parent="Theme.Material3.DayNight"/>
+    <!--
+      Updated to parent Theme.Material3: DayNight is NOT provided by Material3.
+      For dark/light theming, see Compose code in Theme.kt (NotesAppTheme). 
+    -->
+    <!--
+      Use Theme.MaterialComponents.DayNight for XML (for Compose-only apps, this is sufficient).
+      Compose code in Theme.kt will actually provide Material3 theme/look.
+    -->
+    <style name="Theme.NotesApp" parent="Theme.MaterialComponents.DayNight"/>
 </resources>
