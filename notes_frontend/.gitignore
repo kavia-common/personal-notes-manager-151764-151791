@@ -1,1 +1,19 @@
-.env
+# Gradle
+.gradle/
+build/
+*/build/
+
+# Android Studio/Intellij
+.idea/
+*.iml
+*.hprof
+
+# Local Properties
+local.properties
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+.cxx/

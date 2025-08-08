@@ -4,11 +4,13 @@ androidApplication {
     dependencies {
         implementation("org.apache.commons:commons-text:1.11.0")
         implementation(project(":utilities"))
-        // Compose
+        // Compose - ALL VERSIONS ALIGNED! See gradle.properties for Compose Compiler version.
         implementation("androidx.activity:activity-compose:1.8.2")
         implementation("androidx.compose.ui:ui:1.6.4")
-        implementation("androidx.compose.material3:material3:1.2.0")
+        implementation("androidx.compose.material:material:1.6.4")
+        implementation("androidx.compose.material3:material3:1.2.1")
         implementation("androidx.navigation:navigation-compose:2.7.7")
+        implementation("androidx.compose.material:material-icons-extended:1.6.4")
         // Room
         implementation("androidx.room:room-runtime:2.6.1")
         implementation("androidx.room:room-ktx:2.6.1")
@@ -17,8 +19,6 @@ androidApplication {
         implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
         implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-        // Compose icons
-        implementation("androidx.compose.material:material-icons-extended:1.6.4")
         // For XML style Theme.MaterialComponents.DayNight bridge theme
         implementation("com.google.android.material:material:1.11.0")
     }
